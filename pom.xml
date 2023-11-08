@@ -17,10 +17,20 @@
 
 	<!-- Project modules -->
 	<modules>
+		<module>web-app</module>
 	</modules>
 
 	<!-- Project properties -->
 	<properties>
+
+		<!-- Frameworks -->
+		<quarkus.version>3.5.0</quarkus.version>
+
+		<!-- Plugins -->
+		<maven.compiler-plugin.version>3.11.0</maven.compiler-plugin.version>
+		<maven.surefire-plugin.version>3.2.1</maven.surefire-plugin.version>
+		<maven.failsafe-plugin.version>3.2.1</maven.failsafe-plugin.version>
+		<maven.resources-plugin.version>3.3.1</maven.resources-plugin.version>
 
 		<!-- Compiler -->
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -39,6 +49,40 @@
 		<pluginManagement>
 			<plugins>
 
+				<!-- Quarkus platform plugin -->
+				<plugin>
+					<groupId>io.quarkus.platform</groupId>
+					<artifactId>quarkus-maven-plugin</artifactId>
+					<version>${quarkus.version}</version>
+					<extensions>true</extensions>
+					<executions>
+						<execution>
+							<goals>
+								<goal>build</goal>
+								<goal>generate-code</goal>
+								<goal>generate-code-tests</goal>
+							</goals>
+						</execution>
+					</executions>
+				</plugin>
+
+				<!-- Maven compiler plugin configuration for Java -->
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-compiler-plugin</artifactId>
+					<version>${maven.compiler-plugin.version}</version>
+					<configuration>
+						<source>${maven.compiler.source}</source>
+						<target>${maven.compiler.target}</target>
+						<compilerArgs>
+							<!--
+								Allows retrieval of method and constructor parameter names
+								using reflection.
+							 -->
+							<arg>-parameters</arg>
+						</compilerArgs>
+					</configuration>
+				</plugin>
 			</plugins>
 		</pluginManagement>
 	</build>
@@ -46,6 +90,14 @@
 	<!-- Managed dependency configuration -->
 	<dependencyManagement>
 		<dependencies>
+
+			<!-- Quarkus platform -->
+
+			<dependency>
+				<groupId>io.quarkus.platform</groupId>
+				<artifactId>quarkus-bom</artifactId>
+				<version>${quarkus.version}</version>
+			</dependency>
 
 		</dependencies>
 	</dependencyManagement>
